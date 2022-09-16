@@ -69,7 +69,7 @@ class Game
         #prints a quick instruction on how to play
         puts ' '
         puts 'Each player will go turn for turn to find a set.'
-        puts 'The board is created with 4 rows of 3 cards. In order to input a card, you must put the number of the card into the terminal line, followed by a space.'
+        puts "The board is created with 4 rows of 3 cards. In order to input a card, you must put the number of the card into the terminal line, followed by a space. Please don't input at the front and end of the line."
         puts 'When you are done choosing cards that you believe have a set, then you can press "return" or "enter"'
         puts ' '
         puts 'The cards numbers will look like this: '
@@ -128,11 +128,12 @@ class Game
         #While the user doesn't input quit, work the scoring. If the user inputs quit, then "end" the game
         @inputFromUser = 'go'
         while @inputFromUser != 'quit'
-            @cardsPlayed = []
+            @cardsPlayedAfterRead = []
             @inputFromUser = gets.chomp
             @chars = @inputFromUser.split('')
 
             if @inputFromUser != 'quit'
+                @cardsPlayedAfterRead = chars_to_cards_played(@inputFromUser)
                 if @playerOnePlaying == 1
                     @points[0] = @points[0] + 1
                     @playerOnePlaying = 0
@@ -146,6 +147,42 @@ class Game
 
         end_message(@points)
 
+    end
+
+    #Will get the characters that were inputed from the user and will move return an array with all of the information of the cards used by the user
+    # param: Array of chars that the user inputed 
+    # return: an array of the card numbers that the user inputed
+    def chars_to_cards_played(charsInput)
+        @charCounter = 0
+        @curCardNum = 0
+        @cardsPlayed = []
+        @cardCounter = 0
+        @charLength = charsInput.length 
+        puts "Char length = #{@charLength}"
+        @curChar
+        #loop through the array of characters until we reach the end
+        while @charCounter < @charLength
+            @curChar = charsInput[@charCounter]
+            #if the current value is a space, then we know that the current number is not a space and move on
+            if @curChar == ' '
+                @cardCounter = @cardCounter + 1
+            #if the current card is nil, then we need to create it and set it to the value of the current number
+            elsif @cardsPlayed[@cardCounter] == nil
+                @curChar = @curChar.to_i
+                @cardsPlayed[@cardCounter] = 0
+                @cardsPlayed[@cardCounter] = @cardsPlayed[@cardCounter] + @curChar
+            #if the card is not null, add the current integer to the end of the current value of the card
+            else
+                @curChar = @curChar.to_i
+                @curCardNum = @cardsPlayed[@cardCounter]
+                @curCardNum = @curCardNum * 10
+                @curCardNum = @curCardNum + @curChar
+                @cardsPlayed[@cardCounter] = @curCardNum
+            end
+            @charCounter = @charCounter + 1
+        end
+
+        @cardsPlayed
     end
 
     #Will print the end message for the users to know who won the game with a final score-board
