@@ -46,7 +46,7 @@ class Game
     end
 
     #Will print the info on the card in a format 
-    # param: 3 cards. All 3 cards have to be in the same row
+    # param: 3 cards -> All 3 cards have to be in the same row
     def print_card(card1, card2, card3)
         puts '------------          ------------          ------------'
         puts "|#{card1[0]} |          |#{card2[0]} |          |#{card3[0]} |"
@@ -56,6 +56,7 @@ class Game
     end
 
     #Will decide who will start the game randomly. This will also show a quick message of how to play to the user
+    # return: whoever will go first
     def who_starts
         puts ' '
         puts 'The computer will decide who goes first'
@@ -73,10 +74,10 @@ class Game
         puts 'When you are done choosing cards that you believe have a set, then you can press "return" or "enter"'
         puts ' '
         puts 'The cards numbers will look like this: '
-        puts '1     2     3'
-        puts '4     5     6'
-        puts '7     8     9'
-        puts '10    11    12'
+        puts '0     1     2'
+        puts '3     4     5'
+        puts '6     7     8'
+        puts '9    10    11'
         puts ' '
         @order
     end
@@ -109,11 +110,12 @@ class Game
     end
 
     #Will manage the game play for the users
-    # param: who will start the game, as decided by the computer
+    # param: starter -> who will start the game, as decided by the computer
     def game_play(starter)
         puts ' '
         @playerOnePlaying = 1
         @points = [0, 0]
+        @currentCardsInBoard = []
         if starter == 0
             puts 'Player 1, you may now begin' 
         else
@@ -123,7 +125,7 @@ class Game
         puts ' '
 
         #prints the board out for the user
-        board
+        @currentCardsInBoard = board
 
         #While the user doesn't input quit, work the scoring. If the user inputs quit, then "end" the game
         @inputFromUser = 'go'
@@ -141,12 +143,60 @@ class Game
                   @points[1] = @points[1] + 1
                    @playerOnePlaying = 1
                  end
-                 board
+                 @currentCardsInBoard = board
             end
         end
 
         end_message(@points)
 
+    end
+
+    #Will get the numbers of the cards on the board and return an array of the value of the numbers on the card
+    # param: boardParamNum -> the current value of the board
+    # param: cardsParamNum -> the cards that were inputed from the user
+    # returns: array of the numbers in the cards that the user selected
+    def getCardNums(boardParamNum, cardsParamNum)
+        @numbers = []
+        @cardsParamNumCounter = 0
+        @cardsParamNumLength = cardsParamNum.length
+        while @cardsParamNumCounter < @cardsParamNumLength
+            @cardNum = cardsParamNum[@cardsParamNumCounter]
+            @numbers[@cardsParamNumCounter] = boardParamNum[@cardNum][2]
+            @cardsParamNumCounter = @cardsParamNumCounter + 1
+        end
+        @numbers
+    end
+
+    #Will get the shapes of the cards on the board and return an array of the value of the shapes on the card
+    # param: boardParamShape -> the current value of the board
+    # param: cardsParamShape -> the cards that were inputed from the user
+    # returns: array of the shapes in the cards that the user selected
+    def getCardShapes(boardParamShape, cardsParamShape)
+        @cardShapes = []
+        @cardsParamShapeCounter = 0
+        @cardsParamShapeLength = cardsParamShape.length
+        while @cardsParamShapeCounter < @cardsParamShapeLength
+            @cardShapeNum = cardsParamShape[@cardsParamShapeCounter]
+            @cardShapes[@cardsParamShapeCounter] = boardParamShape[@cardShapeNum][1]
+            @cardsParamShapeCounter = @cardsParamShapeCounter + 1
+        end
+        @cardShapes
+    end
+
+    #Will get the color of the cards on the board and return an array of the value of the color on the card
+    # param: boardParamColor -> the current value of the board
+    # param: cardsParamColor -> the cards that were inputed from the user
+    # returns: array of the colors in the cards that the user selected
+    def getCardColor(boardParamColor, cardsParamColor)
+        @cardColor = []
+        @cardsParamColorCounter = 0
+        @cardsParamColorLength = cardsParamColor.length
+        while @cardsParamColorCounter < @cardsParamColorLength
+            @cardColorNum = cardsParamColor[@cardsParamColorCounter]
+            @cardColor[@cardsParamColorCounter] = boardParamColor[@cardColorNum][0]
+            @cardsParamColorCounter = @cardsParamColorCounter + 1
+        end
+        @cardColor
     end
 
     #Will get the characters that were inputed from the user and will move return an array with all of the information of the cards used by the user
@@ -158,7 +208,6 @@ class Game
         @cardsPlayed = []
         @cardCounter = 0
         @charLength = charsInput.length 
-        puts "Char length = #{@charLength}"
         @curChar
         #loop through the array of characters until we reach the end
         while @charCounter < @charLength
@@ -209,8 +258,19 @@ class Game
     end
 
     def start
-        @starterOfGame = who_starts
-        game_play(@starterOfGame)
+#        @starterOfGame = who_starts
+#        game_play(@starterOfGame)
+        @tempBoard = []
+        @tempBoard = board
+        @userCards = []
+        @tempValues = []
+        @userInput = gets.chomp
+        @charsInn = @userInput.split('')
+        @userCards = chars_to_cards_played(@charsInn)
+        @tempValues = getCardColor(@tempBoard, @userCards)
+
+        puts "value 1: #{@tempValues[0]}"
+        puts "value 2: #{@tempValues[1]}"
     end
 
 end
