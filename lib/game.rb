@@ -234,6 +234,41 @@ class Game
         @cardsPlayed
     end
 
+    #Will check to see if there is a set from the cards chosen
+    # param: colorArr -> the values of the colors from the cards
+    # param: shapeArr -> the values of the shapes from the cards
+    # param: numberArr -> the values of the numbers from the cards
+    # returns: whether there is a set from the cards that the user inputs. 1 = yes, 0 = no
+    def isSet(colorArr, shapeArr, numberArr)
+        @colorSet = 1
+        @shapeSet = 1
+        @numberSet = 1
+        @firstColor = colorArr[0]
+        @firstShape = shapeArr[0]
+        @firstNumber = numberArr[0]
+        @setCounter = 1
+        @setLength = @colorArr.length
+        @setInArrs = 1
+        while @setCounter < @setLength
+            @curColor = colorArr[@setCounter]
+            @curShape = shapeArr[@setCounter]
+            @curNum = numberArr[@setCounter]
+            if @curColor != @firstColor
+                @colorSet = 0
+            end
+            if @curShape != @firstShape
+                @shapeSet = 0
+            end
+            if @curNum != @firstNumber
+                @numberSet = 0
+            end
+        end
+        if @colorSet == 0 && @numberSet == 0 && @shapeSet == 0
+            @setInArrs = 0
+        end
+        @setInArrs
+    end
+
     #Will print the end message for the users to know who won the game with a final score-board
     # param: an array of all of the points earned from both players
     def end_message(pointsEarned)
