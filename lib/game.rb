@@ -127,7 +127,7 @@ class Game
         #prints the board out for the user
         @currentCardsInBoard = board
 
-        #While the user doesn't input quit, work the scoring. If the user inputs quit, then "end" the game
+        #While the user doesn't input quit, work the scoring. If the user inputs quit, then end the game
         @inputFromUser = 'go'
         while @inputFromUser != 'quit'
             @cardsPlayedAfterRead = []
@@ -136,13 +136,21 @@ class Game
 
             if @inputFromUser != 'quit'
                 @cardsPlayedAfterRead = chars_to_cards_played(@inputFromUser)
-                if @playerOnePlaying == 1
+                @colorValue = getCardColor(@currentCardsInBoard, @cardsPlayedAfterRead)
+                @shapeValue = getCardShapes(@currentCardsInBoard, @cardsPlayedAfterRead)
+                @numberValue = getCardNums(@currentCardsInBoard, @cardsPlayedAfterRead)
+                @setCreated = isSet(@colorValue, @shapeValue, @numberValue)
+                if @playerOnePlaying == 1 && @setCreated == 1
                     @points[0] = @points[0] + 1
+                    puts 'That was a set, good job'
                     @playerOnePlaying = 0
+                elsif @playerOnePlaying == 0 && @setCreated == 1
+                    @points[1] = @points[1] + 1
+                    puts 'That was a set, good job'
+                    @playerOnePlaying = 1
                 else
-                  @points[1] = @points[1] + 1
-                   @playerOnePlaying = 1
-                 end
+                    puts 'That was not a set, better luck next time'
+                end
                  @currentCardsInBoard = board
             end
         end
@@ -247,7 +255,7 @@ class Game
         @firstShape = shapeArr[0]
         @firstNumber = numberArr[0]
         @setCounter = 1
-        @setLength = @colorArr.length
+        @setLength = colorArr.length
         @setInArrs = 1
         while @setCounter < @setLength
             @curColor = colorArr[@setCounter]
@@ -262,6 +270,7 @@ class Game
             if @curNum != @firstNumber
                 @numberSet = 0
             end
+            @setCounter = @setCounter + 1
         end
         if @colorSet == 0 && @numberSet == 0 && @shapeSet == 0
             @setInArrs = 0
@@ -293,19 +302,11 @@ class Game
     end
 
     def start
-#        @starterOfGame = who_starts
-#        game_play(@starterOfGame)
-        @tempBoard = []
-        @tempBoard = board
-        @userCards = []
-        @tempValues = []
-        @userInput = gets.chomp
-        @charsInn = @userInput.split('')
-        @userCards = chars_to_cards_played(@charsInn)
-        @tempValues = getCardColor(@tempBoard, @userCards)
+        @starterOfGame = who_starts
+        game_play(@starterOfGame)
 
-        puts "value 1: #{@tempValues[0]}"
-        puts "value 2: #{@tempValues[1]}"
     end
 
 end
+
+#so add a shade, stripped, whole, plaid, and that will create 81 different cards, which will make finding a set harder, only 1 thing has to be the same, everything else has to be different
