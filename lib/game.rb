@@ -14,17 +14,14 @@ class Game
     #Will create a card with all of the data. A card will contain a color, shape, and a number. All of this data will be randomized and will be stored in an array called info
     # return: the "card", aka an array of information of the color, shape, and number. Color will always be the first position in the array, the shape being second, and number being third
     def card
-        #generate random info on the color, shape, and number
         @color = rand(3)
         @shape = rand(3)
         @number = rand(3)
 
         @info = ['temp', 'temp', 'temp']
 
-        #places the number associated with the card and places it in the correct place in the array. No spacing provided
         @info[2] = @number
 
-        #calculates the random information and places them in the correct place in the array. Spacing provided for the cards
         if @color == 0
             @info[0] = 'red      '
         elsif @color == 1
@@ -41,7 +38,6 @@ class Game
             @info[1] = 'triangle '
         end
 
-        #returns the array with all of the information of the card
         @info
     end
 
@@ -60,19 +56,12 @@ class Game
     def who_starts
         puts ' '
         puts 'The computer will decide who goes first'
-        #generates who goes first, and then sends a message
         @order = rand(2)
         if @order == 0
             puts "Player 1 will go first"
         else
             puts "Player 2 will go first"
         end
-        #prints a quick instruction on how to play
-        puts ' '
-        puts 'Each player will go turn for turn to find a set.'
-        puts "The board is created with 4 rows of 3 cards. In order to input a card, you must put the number of the card into the terminal line, followed by a space. Please don't input at the front and end of the line."
-        puts 'When you are done choosing cards that you believe have a set, then you can press "return" or "enter"'
-        puts ' '
         puts 'The cards numbers will look like this: '
         puts '0     1     2'
         puts '3     4     5'
@@ -87,13 +76,11 @@ class Game
     def board
         @cardInBoard = []
         @boardCounter = 0
-        #gets randomly generated cards and puts them into an array.
         until @boardCounter == 12 do
             @cardInBoard[@boardCounter] = card
             @boardCounter = @boardCounter + 1
         end
 
-        #Will get 3 cards at a time, and then will call print_card, which will print the cards, 3 at a time
         @tempCounter = 0
         until @tempCounter == 12 do
             @tempCard1 = @cardInBoard[@tempCounter]
@@ -105,7 +92,6 @@ class Game
             @tempCounter = @tempCounter + 1
         end
 
-        #returns all of the cards in the board
         @cardInBoard
     end
 
@@ -124,10 +110,8 @@ class Game
         end
         puts ' '
 
-        #prints the board out for the user
         @currentCardsInBoard = board
 
-        #While the user doesn't input quit, work the scoring. If the user inputs quit, then end the game
         @inputFromUser = 'go'
         while @inputFromUser != 'quit'
             @cardsPlayedAfterRead = []
@@ -217,18 +201,14 @@ class Game
         @cardCounter = 0
         @charLength = charsInput.length 
         @curChar
-        #loop through the array of characters until we reach the end
         while @charCounter < @charLength
             @curChar = charsInput[@charCounter]
-            #if the current value is a space, then we know that the current number is not a space and move on
             if @curChar == ' '
                 @cardCounter = @cardCounter + 1
-            #if the current card is nil, then we need to create it and set it to the value of the current number
             elsif @cardsPlayed[@cardCounter] == nil
                 @curChar = @curChar.to_i
                 @cardsPlayed[@cardCounter] = 0
                 @cardsPlayed[@cardCounter] = @cardsPlayed[@cardCounter] + @curChar
-            #if the card is not null, add the current integer to the end of the current value of the card
             else
                 @curChar = @curChar.to_i
                 @curCardNum = @cardsPlayed[@cardCounter]
@@ -251,12 +231,35 @@ class Game
         @colorSet = 1
         @shapeSet = 1
         @numberSet = 1
+        @duplicateColorVal = 0
+        @duplicateShapeVal = 0
+        @duplicateNumberVal = 0
         @firstColor = colorArr[0]
         @firstShape = shapeArr[0]
         @firstNumber = numberArr[0]
         @setCounter = 1
         @setLength = colorArr.length
         @setInArrs = 1
+        @innerCounter = 1
+        @outerCounter = 0
+        while @outerCounter < @setLength - 1
+            while @innerCounter < @setLength
+                if colorArr[@outerCounter] == colorArr[@innerCounter]
+                    @duplicateColorVal = 1
+                    puts "duplicate found: #{colorArr[@innerCounter]} and #{colorArr[@outerCounter]}"
+                end
+                if shapeArr[@outerCounter] == shapeArr[@innerCounter]
+                    @duplicateShapeVal = 1
+                    puts "duplicate found: #{shapeArr[@innerCounter]} and #{shapeArr[@outerCounter]}"
+                end
+                if numberArr[@outerCounter] == numberArr[@innerCounter]
+                    @duplicateNumberVal = 1
+                    puts "duplicate found: #{numberArr[@innerCounter]} and #{numberArr[@outerCounter]}"
+                end
+                @innerCounter = @innerCounter + 1
+            end
+            @outerCounter = @outerCounter + 1
+        end
         while @setCounter < @setLength
             @curColor = colorArr[@setCounter]
             @curShape = shapeArr[@setCounter]
@@ -273,6 +276,8 @@ class Game
             @setCounter = @setCounter + 1
         end
         if @colorSet == 0 && @numberSet == 0 && @shapeSet == 0
+            @setInArrs = 0
+        elsif @duplicateColorVal + @duplicateNumberVal + @duplicateShapeVal >= 2
             @setInArrs = 0
         end
         @setInArrs
@@ -308,5 +313,3 @@ class Game
     end
 
 end
-
-#so add a shade, stripped, whole, plaid, and that will create 81 different cards, which will make finding a set harder, only 1 thing has to be the same, everything else has to be different
