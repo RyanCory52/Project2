@@ -1,4 +1,6 @@
 require_relative 'player_creator'
+require_relative 'card'
+require_relative 'board'
 
 class Game
 
