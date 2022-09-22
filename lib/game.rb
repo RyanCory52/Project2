@@ -156,6 +156,7 @@ class Game
             @cardNum = cardsParamNum[@cardsParamNumCounter]
             @numbers[@cardsParamNumCounter] = boardParamNum[@cardNum][2]
             @cardsParamNumCounter = @cardsParamNumCounter + 1
+        end
         @numbers
     end
 
