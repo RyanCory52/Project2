@@ -1,5 +1,7 @@
 # project2-example
 
-This is an example you can use as a stsrting point for your own game. This indluces "main.rb" which is the entry point to the application. You should have as little code in here as possible.
+To run the application, run "ruby main.rb". The game should start automatically
 
-To run the application, run "ruby main.rb"
+How to play:
+
+The computer will randomly generate how to play. A set is described as a collection of cards with only 1 quality in common. For example, you can have a collection of cards that all have the number 1, but can't have any qualities that are the same. So if you find 3 cards that you believe to be a set because all cards have the number 1, but 2 of the three cards have the same shape, square, then they are not a set. 
