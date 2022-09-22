@@ -1,6 +1,5 @@
 require_relative 'player_creator'
-require_relative 'card'
-require_relative 'board'
+
 
 class Game
 
@@ -157,7 +156,6 @@ class Game
             @cardNum = cardsParamNum[@cardsParamNumCounter]
             @numbers[@cardsParamNumCounter] = boardParamNum[@cardNum][2]
             @cardsParamNumCounter = @cardsParamNumCounter + 1
-        end
         @numbers
     end
 
@@ -248,15 +246,12 @@ class Game
             while @innerCounter < @setLength
                 if colorArr[@outerCounter] == colorArr[@innerCounter]
                     @duplicateColorVal = 1
-                    puts "duplicate found: #{colorArr[@innerCounter]} and #{colorArr[@outerCounter]}"
                 end
                 if shapeArr[@outerCounter] == shapeArr[@innerCounter]
                     @duplicateShapeVal = 1
-                    puts "duplicate found: #{shapeArr[@innerCounter]} and #{shapeArr[@outerCounter]}"
                 end
                 if numberArr[@outerCounter] == numberArr[@innerCounter]
                     @duplicateNumberVal = 1
-                    puts "duplicate found: #{numberArr[@innerCounter]} and #{numberArr[@outerCounter]}"
                 end
                 @innerCounter = @innerCounter + 1
             end
@@ -286,9 +281,8 @@ class Game
     end
 
     #Will print the end message for the users to know who won the game with a final score-board
-    # param: an array of all of the points earned from both players
+    # param: pointsEarned -> player1 points [0], player2 points [1]
     def end_message(pointsEarned)
-        #prints the start of the message with the final score-board
         puts ' '
         puts 'Game over'
         puts 'Great game!'

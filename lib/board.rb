@@ -1,3 +1,0 @@
-class board
-
-end
